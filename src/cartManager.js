@@ -7,7 +7,7 @@ export default class CartManager {
     this.incrementId = this.calculateIncrementId();
   }
   
-  calculateIncrementId() { // Para evitar que se repita el ID al ejecutar mas de una vez el script: Chequea el ID mas alto de la lista de productos y le agrega +1;
+  calculateIncrementId() {
     const maxId = this.cart.reduce((max, cart) => (cart.id > max ? cart.id : max), 0);
     return maxId + 1;
   }
