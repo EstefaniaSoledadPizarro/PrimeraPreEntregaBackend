@@ -1,59 +1,38 @@
-[
+  [
     {
       "id": 1,
-      "title": "Producto editado desde PUT",
-      "description": "Este es un producto de prueba",
-      "price": 200,
-      "thumbnail": "Sin imagen",
-      "code": "abc1234",
-      "stock": 25
+      "title": "Mate de calabaza",
+      "description": "Mate tradicional hecho de calabaza natural, ideal para disfrutar de un buen mate argentino.",
+      "price": 25.99,
+      "thumbnail": ["image1.jpg"],
+      "code": "MATE01",
+      "stock": 50
+    },
+    {
+      "id": 2,
+      "title": "Bombilla de acero inoxidable",
+      "description": "Bombilla de acero inoxidable resistente y duradera, perfecta para usar con tu mate favorito.",
+      "price": 12.50,
+      "thumbnail": ["image3.jpg"],
+      "code": "BOMB01",
+      "stock": 100
     },
     {
       "id": 3,
-      "title": "producto prueba3",
-      "description": "Este es un producto de prueba",
-      "price": 200,
-      "thumbnail": "Sin imagen",
-      "code": "abc123456",
-      "stock": 25
+      "title": "Mate de vidrio",
+      "description": "Mate moderno de vidrio templado, con diseño elegante y cómodo de sostener.",
+      "price": 29.99,
+      "thumbnail":  ["image2.jpg"],
+      "code": "MATE02",
+      "stock": 30
     },
     {
       "id": 4,
-      "title": "producto prueba4",
-      "description": "Este es un producto de prueba",
-      "price": 200,
-      "thumbnail": "Sin imagen",
-      "code": "abc123456",
-      "stock": 25
-    },
-    {
-      "id": 5,
-      "title": "producto prueba5",
-      "description": "Este es un producto de prueba",
-      "price": 200,
-      "thumbnail": "Sin imagen",
-      "code": "abc123456",
-      "stock": 25
-    },
-    {
-      "id": 6,
-      "title": "Nuevo Producto",
-      "description": "Descripción del nuevo producto",
-      "code": "newproduct123",
-      "price": 150,
-      "status": true,
-      "stock": 20,
-      "category": "Electronics",
-      "thumbnails": []
-    },
-    {
-      "id": 7,
-      "title": "producto prueba por put",
-      "description": "Este es un producto de prueba",
-      "code": "abc1234567",
-      "price": 2200,
-      "status": true,
-      "stock": 40,
-      "thumbnails": []
+      "title": "Bombilla de bronce",
+      "description": "Bombilla de bronce antigua, con filigranas detalladas y estilo clásico.",
+      "price": 18.75,
+      "thumbnail":  ["image4.jpg"],
+      "code": "BOMB02",
+      "stock": 75
     }
   ]
