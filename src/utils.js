@@ -1,4 +1,6 @@
 import multer from "multer";
+import {fileURLToPath} from "url";
+import {dirname} from "path";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -10,3 +12,5 @@ const storage = multer.diskStorage({
 });
 
 export const uploader = multer({ storage });
+const _filename = fileURLToPath (import.meta.url);
+export const __dirname = dirname (_filename);
