@@ -35,7 +35,6 @@ app.get("/", (req, res) => {
     <h1>Agregar Productos</h1>
     <div class="box">
       <br />
-      <form action="http://localhost:8080/api/products" method="post" enctype="multipart/form-data">
         <label>Nombre del Producto</label><br />
         <input type="text" name="title" id="title" /><br />
         <label>Descripción del producto</label><br />
@@ -53,7 +52,6 @@ app.get("/", (req, res) => {
     </div>
     <div class="box">
       <br />
-      <form action="http://localhost:8080/api/cart" method="get">
         <input id="checkCartButton" type="submit" value="Ver Carrito" />
       </form>
     </div>
