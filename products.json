@@ -1,0 +1,38 @@
+[
+  {
+      "id": 1,
+      "is": "mate",
+      "title": "Mate de Cerámica",
+      "description": "Mate de cerámica con diseño tradicional.",
+      "code": "MC001",
+      "price": "13500",
+      "status": true,
+      "stock": "20",
+      "categoría": "mates",
+      "thumbnails": []
+  },
+  {
+      "id": 2,
+      "is": "bombilla",
+      "title": "Bombilla de Acero Inoxidable",
+      "description": "Bombilla de acero inoxidable con filtro incorporado.",
+      "code": "BAI002",
+      "price": "5000",
+      "status": true,
+      "stock": "30",
+      "categoría": "bombillas",
+      "thumbnails": []
+  },
+  {
+      "id": 3,
+      "is": "mate",
+      "title": "Mate de Calabaza",
+      "description": "Mate de calabaza natural, ideal para conservar el sabor de la yerba.",
+      "code": "MC003",
+      "price": "12000",
+      "status": true,
+      "stock": "25",
+      "categoría": "mates",
+      "thumbnails": []
+  }
+]

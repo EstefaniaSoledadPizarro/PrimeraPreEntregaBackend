@@ -1,64 +1,124 @@
 const socket = io();
 
-socket.emit("mensaje", "Mensaje recibido desde el cliente");
+function $(selector) {
+    return document.querySelector(selector);
+}
 
-getProducts();
-
-socket.on("receiveProducts", (products) => {
-  renderProducts(products);
+socket.on('statusError', data => {
+    console.log(data);
+    alert(data);
 });
 
-function addProduct() {
-  const formData = new FormData();
-  formData.append("title", document.getElementById("title").value);
-  formData.append("description", document.getElementById("description").value);
-  formData.append("price", document.getElementById("price").value);
-  formData.append("code", document.getElementById("code").value);
-  formData.append("stock", document.getElementById("stock").value);
-  formData.append("category", document.getElementById("category").value);
-  formData.append("thumbnails", document.getElementById("thumbnails").files[0]);
+socket.on('publishProducts', data => {
+    $('.products-box').innerHTML = '';
 
-  socket.emit("addProduct", formData);
+    let html = '';
+    data.forEach(product => {
+        html += `<div class="product-card">
+                    <h3>${product.title}</h3>
+                    <hr>
+                    <p>Categoria: ${product.category}</p>
+                    <p>Descripción: ${product.description}</p>
+                    <p>Precio: $ ${product.price}</p>
+                    <button id="button-delete" onclick="deleteProduct(${product.id})">Eliminar</button>
+                </div>`;
+    });
 
-  document.getElementById("title").value = "";
-  document.getElementById("description").value = "";
-  document.getElementById("price").value = "";
-  document.getElementById("thumbnails").value = "";
-  document.getElementById("code").value = "";
-  document.getElementById("stock").value = "";
-  document.getElementById("category").value = "";
+    $('.products-box').innerHTML = html;
+});
+
+function createProduct(event) {
+    event.preventDefault();
+    const newProduct = {
+        title: $('#title').value,
+        description: $('#description').value,
+        code: $('#code').value,
+        price: $('#price').value,
+        stock: $('#stock').value,
+        category: $('#category').value
+    }
+
+    cleanForm();
+
+    socket.emit('createProduct', newProduct);
 }
 
-function deleteProduct(productId) {
-  socket.emit("deleteProduct", +productId);
-  getProducts();
+function deleteProduct(pid) {
+    socket.emit('deleteProduct', { pid });
 }
 
-function getProducts() {
-  socket.emit("getProducts");
+function cleanForm() {
+    $('#title').value = '';
+    $('#description').value = '';
+    $('#code').value = '';
+    $('#price').value = '';
+    $('#stock').value = '';
+    $('#category').value = '';
 }
+// Evento para identificar al usuario y manejar el chat
+document.addEventListener("DOMContentLoaded", () => {
+   
+    let user;
+    let chatBox = document.querySelector("#chatBox");
+    let messagesLogs = document.querySelector("#messagesLogs");
+    
+    Swal.fire({
+        title: "Identificate",
+        input: "text",
+        text: "Ingresa el usuario para identificarte en el Chat de usuarios",
+        inputValidator: (value) => {
+            return !value && "¡Necesitas identificarte para continuar!";
+        },
+        allowOutsideClick: false
+    }).then(result => {
+        user = result.value;
+        console.log(`Tu nombre de usuario es ${user}`);
+    
+        // Emitir evento de conexión de usuario al servidor WebSocket
+        socket.emit("userConnect", user);
+    });
+    
+    // Evento para enviar mensajes en el chat
+    chatBox.addEventListener("keypress", e => {
+        if (e.key == "Enter") {
+            if (chatBox.value.trim().length > 0) {
+                console.log(`Mensaje: ${chatBox.value}`);
+    
+                // Emitir evento de mensaje al servidor WebSocket
+                socket.emit("message", {
+                    user,
+                    message: chatBox.value
+                });
+    
+                chatBox.value = "";
+            }
+        }
+    });
+    
+    socket.on("messages", data => {
+        console.log("Mensajes recibidos del servidor:", data);
+        let messages = "";
+    
+        // Verificar si data es un array antes de intentar iterar sobre él
+        if (Array.isArray(data)) {
+            data.forEach(chat => {
+                messages += `${chat.user}: ${chat.message} </br>`;
+            });
+        } else {
+            console.error("Data received is not an array:", data);
+        }
+    
+        messagesLogs.innerHTML = messages;
+        console.log("mensaje recibido");
+    });
+    // Manejador de eventos para recibir notificaciones de nuevos usuarios en el chat
+    socket.on("newUser", data => {
+        Swal.fire({
+            text: `${data} se ha unido al chat`,
+            toast: true,
+            position: "top-right"
+        })
+    });
 
-function renderProducts(products) {
-  const productsContainer = document.getElementById("products-container");
-  let productCardsHTML = "";
 
-  products.forEach((product) => {
-    productCardsHTML += `
-    <div class="product-card">
-      <img class="product-thumbnail" src="${product.thumbnails}" alt="Product Thumbnail">
-      <div class="product-details">
-        <p class="product-title">${product.title}</p>
-        <p class="product-description">${product.description}</p>
-        <p class="product-price">$${product.price}</p>
-        <p class="product-stock">Stock: ${product.stock}</p>
-        <p class="product-code">Code: ${product.code}</p>
-      </div>
-      <div class="product-actions">
-        <button class="delete-button" onclick="deleteProduct(${product.id})">Delete</button>
-      </div>
-    </div>
-    `;
-  });
-
-  productsContainer.innerHTML = productCardsHTML;
-}
+});
