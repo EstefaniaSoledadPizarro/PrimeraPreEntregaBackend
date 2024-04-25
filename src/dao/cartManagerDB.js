@@ -112,7 +112,7 @@ class cartManagerDB {
                     });
                 }
 
-              
+                // Guarda los cambios en la base de datos
                 await cart.save();
                 return cart;
             } else {
@@ -122,6 +122,22 @@ class cartManagerDB {
         } catch (error) {
             // Captura cualquier error y lo maneja
             throw new Error(`Error al agregar producto al carrito: ${error.message}`);
+        }
+    }
+    async deleteCart(cartId) {
+        try {
+            // Buscar el carrito por su ID
+            const cart = await cartModel.findById(cartId);
+            if (!cart) {
+                throw new Error(`El carrito ${cartId} no existe`);
+            }
+    
+            // Eliminar el carrito de la base de datos
+            await cartModel.findByIdAndDelete(cartId);
+    
+            return { message: `Carrito ${cartId} eliminado exitosamente` };
+        } catch (error) {
+            throw new Error(`Error al eliminar el carrito: ${error.message}`);
         }
     }
 }
