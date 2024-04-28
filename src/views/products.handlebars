@@ -1,13 +1,17 @@
 <div class="box">
-    <h1>Productos</h1>
-    <a href="http://localhost:8080/products/login" class="button">Login</a>
-     <form id="search-form-category">
+    <h1>Bienvenido {{#if user.admin}}admin{{else}}usuario{{/if}} {{user.first_name}}</h1>  
+    <hr>
+    <h2>Productos</h2>
+    <form class="box" method="post" action="http://localhost:8080/api/sessions/logout">
+        <button type="submit" class="button">Logout</button>
+    </form>
+    
+    <form class="box"  id="search-form-category">
         <label for="category">Categoría:</label>
         <input type="text" id="category" name="category">
         <button type="submit">Buscar por Categoría</button>
     </form>
-
-    <form id="search-form-availability">
+    <form class="box" id="search-form-availability">
         <label for="availability">Disponibilidad:</label>
         <select id="availability" name="availability">
             <option value="true">Disponible</option>
@@ -15,16 +19,11 @@
         </select>
         <button type="submit">Buscar por Disponibilidad</button>
     </form>    
-
- {{!-- corregir- link incompleto --}}
-        <a href="http://localhost:8080/products" class="button">
+        <a href="http://localhost:8080/products?sort={%22price%22:1}" class="button">
           Ordenar por Precio Ascendente    
-        <a href="http://localhost:8080/products" class="button">
+        <a href="http://localhost:8080/products?sort={%22price%22:-1}" class="button">
           Ordenar por Precio Descendente
-        </a>    
-
-
-
+        </a>     
     {{#if isValid}}
         <div class="products-box">
             {{#each products}}
@@ -41,13 +40,13 @@
         <hr>
         <div>
             {{#if hasPrevPage}}
-                <a href="{{this.prevLink}}"><<Anterior</a>
+                <a href="{{this.prevLink}}" class="button"><< Anterior</a>
             {{/if}}
         </div>
         <br>
         <div>
             {{#if hasNextPage}}
-                <a href="{{this.nextLink}}">Siguiente >></a>
+                <a href="{{this.nextLink}}" class="button">Siguiente >></a>
             {{/if}}
         </div>
     {{else}}

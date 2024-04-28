@@ -1,5 +1,8 @@
 import express from 'express';
 import handlebars from 'express-handlebars';
+import session from 'express-session';
+import mongoStore from 'connect-mongo';
+import userRouter from './routes/userRouter.js';
 import productRouter from './routes/productRouter.js';
 import cartRouter from './routes/cartRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
@@ -12,7 +15,7 @@ import mongoose from "mongoose";
 const app = express();
 
 //MongoDB conect 
-const uri = "mongodb+srv://soledadpizarro21:pizasolecluster@cluster0.qnkvxjc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri =  "mongodb+srv://soledadpizarro21:pizasolecluster@cluster0.qnkvxjc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 async function connectToMongoDB() {
     try {
@@ -26,6 +29,19 @@ async function connectToMongoDB() {
 // Llamar a la función para establecer la conexión
 connectToMongoDB();
 
+// const conexion = async()=>{
+//     try{
+//         //en este caso la conexion es a mi bbdd Mongodb local
+//           await mongoose.connect("mongodb://127.0.0.1:27017", {dbName: "usuarios"})     
+//         console.log("conectado a la bbdd en mongo Compas")
+//     }catch(error){
+//         console.log("fallo conexion")
+//     }
+// }
+
+// conexion()
+
+
 //Handlebars Config
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + '/../views');
@@ -35,12 +51,33 @@ app.set('view engine', 'handlebars');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
+//Session Middleware
+app.use(session(
+    {
+        store: mongoStore.create(
+            {
+                mongoUrl: uri,
+                ttl: 3600
+            }
+        ),
+        secret: 'secretPhrase',
+        resave: true,
+        saveUninitialized: true
+    }
+));
 
 //Routers
+app.use('/api/sessions', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
+app.use('/api/chat', messageRouter);
 app.use('/products', viewsRouter);
-app.use('/chat', messageRouter)
+
+// Middleware para redirigir la ruta raíz a la pantalla de login
+app.get('/', (req, res) => {
+    res.redirect('/products/login');
+});
+
 
 const PORT = 8080;
 const httpServer = app.listen(PORT, () => {

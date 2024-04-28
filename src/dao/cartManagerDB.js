@@ -112,10 +112,11 @@ class cartManagerDB {
                     });
                 }
 
+                // Guarda los cambios en la base de datos
                 await cart.save();
                 return cart;
             } else {
-                // Si no se encuentra el carrito, emite un error
+                // Si no se encuentra el carrito, lanza un error
                 throw new Error(`El carrito ${cid} no existe`);
             }
         } catch (error) {
