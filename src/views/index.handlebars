@@ -1,7 +1,7 @@
 <div class="box">
     <h1>Productos</h1>
     <a href="http://localhost:8080/products/login" class="button">Login</a>
-     <form id="search-form-category">
+    <form id="search-form-category">
         <label for="category">Categoría:</label>
         <input type="text" id="category" name="category">
         <button type="submit">Buscar por Categoría</button>
@@ -14,43 +14,42 @@
             <option value="false">No Disponible</option>
         </select>
         <button type="submit">Buscar por Disponibilidad</button>
-    </form>    
+    </form>
 
- {{!-- corregir- link incompleto --}}
-        <a href="http://localhost:8080/products" class="button">
-          Ordenar por Precio Ascendente    
-        <a href="http://localhost:8080/products" class="button">
-          Ordenar por Precio Descendente
-        </a>    
-
+    <a href="http://localhost:8080/products?sort={%22price%22:1}" class="button">
+        Ordenar por Precio Ascendente
+        <a href="http://localhost:8080/products?sort={%22price%22:-1}" class="button">
+            Ordenar por Precio Descendente
+        </a>
 
 
-    {{#if isValid}}
+        {{#if isValid}}
         <div class="products-box">
             {{#each products}}
-               <div class="product-card">
+            <div class="product-card">
                 <h3>{{this.title}}</h3>
                 <hr>
                 <p>Categoria: {{this.category}}</p>
                 <p>Descripción: {{this.description}}</p>
                 <p>Precio: $ {{this.price}}</p>
             </div>
-               <br>
+            <br>
             {{/each}}
         </div>
         <hr>
         <div>
             {{#if hasPrevPage}}
-                <a href="{{this.prevLink}}"><<Anterior</a>
-            {{/if}}
+            <a href="{{this.prevLink}}">
+                <<Anterior< /a>
+                    {{/if}}
         </div>
         <br>
         <div>
             {{#if hasNextPage}}
-                <a href="{{this.nextLink}}">Siguiente >></a>
+            <a href="{{this.nextLink}}">Siguiente >></a>
             {{/if}}
         </div>
-    {{else}}
-       <h2>No hay productos para mostrar</h2>
-    {{/if}}
+        {{else}}
+        <h2>No hay productos para mostrar</h2>
+        {{/if}}
 </div>
